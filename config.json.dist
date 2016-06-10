@@ -1,3 +1,7 @@
 {
-  "googleApiKey": ""
+  "googleApiKey": "",
+  "databaseName": "sharelist",
+  "databaseUser": "root",
+  "databasePassword": "",
+  "databaseHost": "localhost"
 }

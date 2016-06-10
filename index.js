@@ -27,6 +27,14 @@ app.get('/slave', function(req, res){
   res.sendFile(__dirname + '/slave.html');
 });
 
+app.get('/youtube', function(req, res){
+  res.sendFile(__dirname + '/youtube.html');
+});
+
+app.get('/yt-slave', function(req, res){
+  res.sendFile(__dirname + '/yt-slave.html');
+});
+
 app.get("/init-playlist.html", function(req, res) {
 
   fs.readFile(__dirname + "/storage/playlist.txt", 'utf8', function (err,data) {
@@ -61,6 +69,10 @@ io.on('connection', function(socket){
 
   socket.on('track.played', function(link, host){
      io.emit('track.played', link, host);
+  });
+
+  socket.on('yttrack.played', function(vid){
+     io.emit('yttrack.played', vid);
   });
 
 });

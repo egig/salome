@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player"></div>
+    <ol id="playlist">
+
+    </ol>
+
+    <form id="add_track_form">
+      <label>Youtube URL</label>
+      <input id="yt_url" type="text"><button>Add</button>
+    </form>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+
+      socket.on('yttrack.played', function(video_id){
+        player.loadVideoById(video_id);
+        player.playVideo();
+      });
+
+      // 2. This code loads the IFrame Player API code asynchronously.
+      $(add_track_form).on('submit', function(e) {
+        e.preventDefault();
+        var url = $(yt_url).val();
+        $(playlist).append('<li><a class="track" href="'+url+'">'+url+'</a></li>');
+      });
+
+      $(document).on('click', 'a.track', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        var video_id = get_vid(url);
+        socket.emit('yttrack.played', video_id);
+      });
+
+      function get_vid(url) {
+        var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        var match = url.match(regExp);
+        if (match && match[2].length == 11) {
+          return match[2];
+        } else {
+          //error
+        }
+      }
+
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: 'M7lc1UVf-VE',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      var done = false;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, 6000);
+          done = true;
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+    </script>
+  </body>
+</html>

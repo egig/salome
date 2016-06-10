@@ -4,8 +4,17 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
 var model = require('./model.js');
+var nunjucks = require('nunjucks');
 
-model.create_connection();
+var config = JSON.parse(fs.readFileSync(__dirname+"/config.json", 'utf8'));
+
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app
+});
+
+// @todo
+// model.create_connection();
 
 app.use(express.static('public'));
 
@@ -31,11 +40,13 @@ app.get('/slave', function(req, res){
 });
 
 app.get('/youtube', function(req, res){
-  res.sendFile(__dirname + '/youtube.html');
+  var data = { api_key: config.googleApiKey }
+  res.render('youtube.html', data);
 });
 
 app.get('/yt-slave', function(req, res){
-  res.sendFile(__dirname + '/yt-slave.html');
+  var data = { api_key: config.googleApiKey }
+  res.render('yt-slave.html', data);
 });
 
 app.get("/init-playlist.html", function(req, res) {
@@ -68,6 +79,10 @@ io.on('connection', function(socket){
           }
           console.log("The file was saved!");
       });
+  });
+
+  socket.on('ytplaylist.updated', function(vid){
+     io.emit('ytplaylist.updated', vid);
   });
 
   socket.on('track.played', function(link, host){

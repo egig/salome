@@ -18,21 +18,32 @@
       var socket = io();
 
       socket.on('yttrack.played', function(video_id){
+
+        console.log(video_id);
+
         player.loadVideoById(video_id);
         player.playVideo();
       });
+
+      socket.on('ytplaylist.updated', function(video){
+          $(playlist).append('<li><a class="track" data-id="'+video.id+'" href="javascript:;">'+video.snippet.title+'</a></li>');
+        });
 
       // 2. This code loads the IFrame Player API code asynchronously.
       $(add_track_form).on('submit', function(e) {
         e.preventDefault();
         var url = $(yt_url).val();
-        $(playlist).append('<li><a class="track" href="'+url+'">'+url+'</a></li>');
+        var video_id = get_vid(url);
+
+        $.getJSON("https://www.googleapis.com/youtube/v3/videos?part=snippet&id="+video_id+"&key={{ api_key }}",
+        function(data){
+          socket.emit('ytplaylist.updated', data.items[0]);
+        });
       });
 
       $(document).on('click', 'a.track', function(e) {
         e.preventDefault();
-        var url = $(this).attr('href');
-        var video_id = get_vid(url);
+        var video_id = $(this).data('id');
         socket.emit('yttrack.played', video_id);
       });
 

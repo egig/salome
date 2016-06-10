@@ -2,3 +2,4 @@
 /storage/*
 !/storage/.gitkeep
 /public/bower_components
+/config.json

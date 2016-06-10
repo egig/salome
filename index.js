@@ -3,6 +3,9 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var fs = require('fs');
+var model = require('./model.js');
+
+model.create_connection();
 
 app.use(express.static('public'));
 

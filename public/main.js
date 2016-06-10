@@ -5,9 +5,10 @@
   var audio = $('audio');
 
   $(track_chooser).change(function() {
-    for (f of track_chooser.files) {
-      var url = URL.createObjectURL(f);
-      var h = "<li><a class='track' href="+url+">"+f.name+"</a></li>";
+
+    for (var i = 0; i<track_chooser.files.length; i++) {
+      var url = URL.createObjectURL(track_chooser.files[i]);
+      var h = "<li><a class='track' href="+url+">"+track_chooser.files[i].name+"</a></li>";
       socket.emit('playlist.updated', h);
     }
   });

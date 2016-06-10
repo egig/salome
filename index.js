@@ -31,7 +31,8 @@ app.get("/init-playlist.html", function(req, res) {
 
   fs.readFile(__dirname + "/storage/playlist.txt", 'utf8', function (err,data) {
     if (err) {
-      return console.log(err);
+      console.log(err);
+      return false;
     }
 
     res.end(data);

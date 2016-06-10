@@ -13,9 +13,6 @@ nunjucks.configure('views', {
     express: app
 });
 
-// @todo
-// model.create_connection();
-
 app.use(express.static('public'));
 
 app.get('/', function(req, res){
@@ -39,9 +36,21 @@ app.get('/slave', function(req, res){
   res.sendFile(__dirname + '/slave.html');
 });
 
-app.get('/youtube', function(req, res){
-  var data = { api_key: config.googleApiKey }
-  res.render('youtube.html', data);
+app.get('/youtube/:playlist', function(req, res){
+
+  var pl = req.params.playlist;
+
+  model.get_playlist_tracks(pl, function(playlists, plid, tracks){
+
+    var data = {
+      api_key: config.googleApiKey,
+      playlists: playlists,
+      tracks: tracks,
+      playlist_id: plid
+    }
+
+    res.render('youtube.html', data);
+  });
 });
 
 app.get('/yt-slave', function(req, res){
@@ -66,7 +75,7 @@ io.on('connection', function(socket){
   console.log('a user connected: ', socket.id);
 
   socket.on('disconnect', function(){
-   console.log('user disconnected');
+      console.log('user disconnected');
   });
 
   socket.on('playlist.updated', function(t){
@@ -81,8 +90,10 @@ io.on('connection', function(socket){
       });
   });
 
-  socket.on('ytplaylist.updated', function(vid){
-     io.emit('ytplaylist.updated', vid);
+  socket.on('ytplaylist.updated', function(vid, plid){
+     io.emit('ytplaylist.updated', vid, plid);
+
+     model.insert_track(plid, vid.snippet.title, vid.snippet.thumbnails.medium.url, vid.id);
   });
 
   socket.on('track.played', function(link, host){

@@ -1,33 +1,74 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Playlists</title>
+    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  </head>
   <body>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div id="player"></div>
-    <ol id="playlist">
 
-    </ol>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+            playlist kece
+          </a>
+        </div>
+      </div>
+    </nav>
 
-    <form id="add_track_form">
-      <label>Youtube URL</label>
-      <input id="yt_url" type="text"><button>Add</button>
-    </form>
+    <div class="container">
+      <div class="row">
+          <div class="col-md-3">
+            <ul class="nav nav-pills nav-stacked">
+              {% for pl in playlists %}
+                <li><a href="/youtube/{{ pl.name }}">{{ pl.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="col-md-9">
+            <div style="background: #333; text-align: center;">
+              <div id="player"></div>
+            </div>
+            <form id="add_track_form">
+              <label>Add Youtube URL</label>
+              <input class="form-control" id="yt_url" type="text">
+              <button class="btn btn-primary">Add</button>
+            </form>
 
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+            <ol id="playlist" class="media-list">
+              {% for t in tracks %}
+              <li class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <img height="40px"  class="media-object" src="{{ t.thumbnail_url }}">
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading"><a class="track" data-id="{{ t.video_id }}" href="javascript:;">{{ t.title }}</a></h4>
+                  ...
+                </div>
+              </li>
+              {% endfor %}
+            </ol>
+
+          </div>
+        </div>
+      </div>
+
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
 
       socket.on('yttrack.played', function(video_id){
-
-        console.log(video_id);
-
         player.loadVideoById(video_id);
         player.playVideo();
       });
 
-      socket.on('ytplaylist.updated', function(video){
-          $(playlist).append('<li><a class="track" data-id="'+video.id+'" href="javascript:;">'+video.snippet.title+'</a></li>');
-        });
+      socket.on('ytplaylist.updated', function(video, plid) {
+          $(playlist).append('<li><a class="track" data-id="'+video.id+'" href="javascript:;"><img src="'+video.snippet.thumbnails.medium.url+'">'+video.snippet.title+'</a></li>');
+      });
 
       // 2. This code loads the IFrame Player API code asynchronously.
       $(add_track_form).on('submit', function(e) {
@@ -37,7 +78,7 @@
 
         $.getJSON("https://www.googleapis.com/youtube/v3/videos?part=snippet&id="+video_id+"&key={{ api_key }}",
         function(data){
-          socket.emit('ytplaylist.updated', data.items[0]);
+          socket.emit('ytplaylist.updated', data.items[0], {{ playlist_id }});
         });
       });
 
@@ -70,32 +111,14 @@
         player = new YT.Player('player', {
           height: '390',
           width: '640',
-          videoId: 'M7lc1UVf-VE',
+          videoId: '',
           events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
+            //'onReady': onPlayerReady,
+            //'onStateChange': onPlayerStateChange
           }
         });
       }
 
-      // 4. The API will call this function when the video player is ready.
-      function onPlayerReady(event) {
-        event.target.playVideo();
-      }
-
-      // 5. The API calls this function when the player's state changes.
-      //    The function indicates that when playing a video (state=1),
-      //    the player should play for six seconds and then stop.
-      var done = false;
-      function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) {
-          setTimeout(stopVideo, 6000);
-          done = true;
-        }
-      }
-      function stopVideo() {
-        player.stopVideo();
-      }
     </script>
   </body>
 </html>

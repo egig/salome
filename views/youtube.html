@@ -22,7 +22,7 @@
           <div class="col-md-3">
             <ul class="nav nav-pills nav-stacked">
               {% for pl in playlists %}
-                <li><a href="/youtube/{{ pl.name }}">{{ pl.name }}</a></li>
+                <li><a href="/player/{{ pl.name }}">{{ pl.name }}</a></li>
               {% endfor %}
               <li><a  data-toggle="modal" data-target="#add_playlist_modal" href="javascript:;" id="add_playlist">Tambah Playlist</a></li>
             </ul>
@@ -52,7 +52,7 @@
                   </div>
                   <div class="media-body">
                     <h4 class="media-heading"><a class="track" data-id="{{ t.video_id }}" href="javascript:;">{{ t.title }}</a></h4>
-                    ...
+                     <button class="btn btn-xs btn-default delete-track" data-pltrack-id="{{ t.pltrackid }}" >Delete</button>
                   </div>
                 </li>
                 {% endfor %}
@@ -89,8 +89,12 @@
     <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-
     var socket = io();
+
+    $(document).on("click", '.delete-track', function(e){
+      var pltrackid = $(this).data("pltrack-id");
+      socket.emit("delete-track", pltrackid);
+    });
 
      // listen add playlists
      $(add_playlist_form).on("submit", function(e) {
@@ -100,6 +104,10 @@
       });
 
       socket.on('new-playlist', function(plname) {
+          window.location.reload(true);
+      });
+
+      socket.on('delete-track', function(plname) {
           window.location.reload(true);
       });
 

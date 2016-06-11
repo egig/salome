@@ -36,7 +36,7 @@ app.get('/slave', function(req, res){
   res.sendFile(__dirname + '/slave.html');
 });
 
-app.get('/youtube/:playlist', function(req, res){
+app.get('/player/:playlist', function(req, res){
 
   var pl = req.params.playlist;
 
@@ -53,7 +53,7 @@ app.get('/youtube/:playlist', function(req, res){
   });
 });
 
-app.get('/yt-slave', function(req, res){
+app.get('/playlist', function(req, res){
   var data = { api_key: config.googleApiKey }
   res.render('yt-slave.html', data);
 });
@@ -108,6 +108,13 @@ io.on('connection', function(socket){
 
     model.add_playlist(plname, function(){
       io.emit('new-playlist', plname);
+    });
+  });
+
+  socket.on('delete-track', function(pltrackid){
+
+    model.delete_pltrack(pltrackid, function(){
+      io.emit('delete-track', pltrackid);
     });
   });
 

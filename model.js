@@ -28,6 +28,18 @@ module.exports = {
     */
   },
 
+  delete_pltrack: function(pltrackid, callback) {
+
+    this.create_connection();
+    this.connection.connect();
+
+    this.connection.query('DELETE from playlist_track where id =\''+pltrackid+'\'', function(err, result) {
+        return callback(pltrackid);
+    });
+
+    this.connection.end();
+  },
+
   add_playlist: function(plname, callback) {
 
     this.create_connection();
@@ -57,7 +69,7 @@ module.exports = {
         if(rows.length > 0) {
           var pl = rows[0];
           var query = "";
-          query += "SELECT * from track JOIN playlist_track on track.id = playlist_track.track_id ";
+          query += "SELECT *, playlist_track.id as pltrackid FROM track JOIN playlist_track on track.id = playlist_track.track_id ";
           query += "where playlist_track.playlist_id = "+pl.id;
           query += " order by playlist_track.id DESC";
 

@@ -104,6 +104,13 @@ io.on('connection', function(socket){
      io.emit('yttrack.played', vid);
   });
 
+  socket.on('new-playlist', function(plname){
+
+    model.add_playlist(plname, function(){
+      io.emit('new-playlist', plname);
+    });
+  });
+
 });
 
 http.listen(3000, function(){

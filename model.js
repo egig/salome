@@ -28,6 +28,23 @@ module.exports = {
     */
   },
 
+  add_playlist: function(plname, callback) {
+
+    this.create_connection();
+    this.connection.connect();
+
+    var data = {
+      name: plname
+    };
+
+    this.connection.query('INSERT INTO playlist SET ?', data, function(err, result) {
+        return callback(plname);
+    });
+
+    this.connection.end();
+
+  },
+
   get_playlist_tracks: function(pl, callback) {
     this.create_connection();
     this.connection.connect();
@@ -42,6 +59,7 @@ module.exports = {
           var query = "";
           query += "SELECT * from track JOIN playlist_track on track.id = playlist_track.track_id ";
           query += "where playlist_track.playlist_id = "+pl.id;
+          query += " order by playlist_track.id DESC";
 
           _this.connection.query(query, function(err, tracks) {
             if(err) {

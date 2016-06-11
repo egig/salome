@@ -36,11 +36,11 @@ app.get('/slave', function(req, res){
   res.sendFile(__dirname + '/slave.html');
 });
 
-app.get('/player/:playlist', function(req, res){
+app.get('/player/:playlist_id', function(req, res){
 
-  var pl = req.params.playlist;
+  var playlist_id = req.params.playlist_id;
 
-  model.get_playlist_tracks(pl, function(playlists, plid, tracks){
+  model.get_playlist_tracks(playlist_id, function(playlists, plid, tracks){
 
     var data = {
       api_key: config.googleApiKey,
@@ -49,13 +49,24 @@ app.get('/player/:playlist', function(req, res){
       playlist_id: plid
     }
 
-    res.render('youtube.html', data);
+    res.render('player.html', data);
   });
 });
 
-app.get('/playlist', function(req, res){
-  var data = { api_key: config.googleApiKey }
-  res.render('yt-slave.html', data);
+app.get('/playlist/:playlist_id', function(req, res){
+  var playlist_id = req.params.playlist_id;
+
+  model.get_playlist_tracks(playlist_id, function(playlists, plid, tracks){
+
+    var data = {
+      api_key: config.googleApiKey,
+      playlists: playlists,
+      tracks: tracks,
+      playlist_id: plid
+    }
+
+    res.render('playlist.html', data);
+  });
 });
 
 app.get("/init-playlist.html", function(req, res) {
@@ -116,6 +127,10 @@ io.on('connection', function(socket){
     model.delete_pltrack(pltrackid, function(){
       io.emit('delete-track', pltrackid);
     });
+  });
+
+  socket.on('playlist-changed', function(plid){
+     io.emit('playlist-changed', plid);
   });
 
 });

@@ -1,0 +1,26 @@
+<div style="margin: 10px 0;">
+  <form id="add_track_form" class="form-inline">
+    <label class="sr-only">Add Youtube URL</label>
+    <div class="form-group">
+      <input placeholder="Youtube URL" class="form-control" id="yt_url" type="text" style="width:540px;">
+      <button class="btn btn-primary">Add</button>
+    </div>
+  </form>
+</div>
+<div style="margin: 10px 0;">
+  <ol id="playlist" class="media-list">
+    {% for t in tracks %}
+    <li class="media">
+      <div class="media-left">
+        <a href="#">
+          <img height="40px"  class="media-object" src="{{ t.thumbnail_url }}">
+        </a>
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading"><a class="track" data-id="{{ t.video_id }}" href="javascript:;">{{ t.title }}</a></h4>
+         <button class="btn btn-xs btn-default delete-track" data-pltrack-id="{{ t.pltrackid }}" >Delete</button>
+      </div>
+    </li>
+    {% endfor %}
+  </ol>
+</div>

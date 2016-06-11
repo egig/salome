@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Playlists</title>
+    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+             Realtime Shared Youtube Playlist
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="row">
+          <div class="col-md-3">
+            <ul class="nav nav-pills nav-stacked">
+              {% for pl in playlists %}
+                <li><a class="playlist-item" data-plid="{{ pl.id }}" href="/player/{{ pl.id }}">{{ pl.name }}</a></li>
+              {% endfor %}
+              <li><a  data-toggle="modal" data-target="#add_playlist_modal" href="javascript:;" id="add_playlist">Tambah Playlist</a></li>
+            </ul>
+          </div>
+
+          <div class="col-md-9">
+            <div style="background: #333; text-align: center;">
+              <div id="player"></div>
+            </div>
+
+            {% include 'tracklist.html' %}
+
+          </div>
+        </div>
+      </div>
+
+
+      <div id="add_playlist_modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <form method="POST" id="add_playlist_form">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Add Playlist</h4>
+              </div>
+              <div class="modal-body">
+                  <label>Playlist Name (without space)</label>
+                  <input type="text" class="form-control" name="playlist_name">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </form>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/player.js"> </script>
+    <script>
+
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: '',
+        events: {
+          'onReady': onPlayerReady,
+          //'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerReady() {
+      PLAYER.init('{{ api_key }}', {{ playlist_id }}, player );
+    }
+    </script>
+  </body>
+</html>

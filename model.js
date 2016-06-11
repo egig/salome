@@ -57,14 +57,14 @@ module.exports = {
 
   },
 
-  get_playlist_tracks: function(pl, callback) {
+  get_playlist_tracks: function(plid, callback) {
     this.create_connection();
     this.connection.connect();
 
     var _this = this;
     this.connection.query('SELECT * from playlist', function(err, playlists, fields) {
 
-      _this.connection.query('SELECT * from playlist where name=\''+pl+'\'', function(err, rows) {
+      _this.connection.query('SELECT * from playlist where id=\''+plid+'\'', function(err, rows) {
 
         if(rows.length > 0) {
           var pl = rows[0];

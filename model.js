@@ -28,6 +28,22 @@ module.exports = {
     */
   },
 
+  deletePlaylist: function(plid, callback) {
+    this.create_connection();
+    this.connection.connect();
+
+    var _this = this;
+    this.connection.query('DELETE from playlist_track where playlist_id =\''+plid+'\'', function(err, result) {
+      _this.connection.query('DELETE from playlist where id =\''+plid+'\'', function(err, result) {
+
+          _this.connection.end();
+
+          return callback(err, plid);
+      });
+      
+    });
+  },
+
   delete_pltrack: function(pltrackid, callback) {
 
     this.create_connection();

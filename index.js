@@ -36,9 +36,9 @@ app.get('/slave', function(req, res){
   res.sendFile(__dirname + '/slave.html');
 });
 
-app.get('/player/:playlist_id', function(req, res){
+app.get('/player/:playlist_id?', function(req, res){
 
-  var playlist_id = req.params.playlist_id;
+  var playlist_id = req.params.playlist_id || 1;
 
   model.get_playlist_tracks(playlist_id, function(playlists, plid, tracks){
 
@@ -53,8 +53,9 @@ app.get('/player/:playlist_id', function(req, res){
   });
 });
 
-app.get('/playlist/:playlist_id', function(req, res){
-  var playlist_id = req.params.playlist_id;
+app.get('/playlist/:playlist_id?', function(req, res){
+
+  var playlist_id = req.params.playlist_id || 1;
 
   model.get_playlist_tracks(playlist_id, function(playlists, plid, tracks){
 
@@ -131,6 +132,18 @@ io.on('connection', function(socket){
 
   socket.on('playlist-changed', function(plid){
      io.emit('playlist-changed', plid);
+  });
+
+  socket.on('playlist-deleted', function(plid){
+    
+    model.deletePlaylist(plid, function(err, plidx){
+
+      if(err) {
+        return console.log(err);
+      }
+
+      io.emit('playlist-deleted', plidx);
+    });
   });
 
 });

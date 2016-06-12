@@ -15,7 +15,7 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
 
   return {
 
-    init:function(apiKey, playlistId) {
+    init:function(apiKey, playlistId, playlistDeletable) {
 
       this.listenDeleteTrack();
       this.listenAddPlaylist();
@@ -23,6 +23,7 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
       this.listenAddTrack(apiKey, playlistId);
       this.listenTrackPlayed();
       this.listenChangePlaylist();
+      this.listenDeletePlaylist(playlistDeletable);
 
     },
 
@@ -64,6 +65,10 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
           window.location.replace(plid);
       });
 
+      socket.on('playlist-deleted', function(plid) {
+          window.location.replace(1);
+      });
+
       socket.on('ytplaylist.updated', function(video, plid) {
           var html = '<li class="media">\
             <div class="media-left">\
@@ -98,6 +103,16 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
         var video_id = $(this).data('id');
         socket.emit('yttrack.played', video_id);
       });
+    },
+
+    listenDeletePlaylist: function(playlistDeletable) {
+
+      if(playlistDeletable) {
+        $(document).on("click", "#delete_playlist", function(e){
+          var plid = $(this).data("pl-id");
+          socket.emit("playlist-deleted", plid);
+        });
+      }
     },
   }
 

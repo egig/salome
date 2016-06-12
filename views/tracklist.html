@@ -24,3 +24,7 @@
     {% endfor %}
   </ol>
 </div>
+
+{% if playlist_id != 1 %}
+<button class="btn btn-xs btn-default" data-pl-id="{{ playlist_id }}" id="delete_playlist">Delete this playlist</button>
+{% endif %}

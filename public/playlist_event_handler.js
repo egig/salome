@@ -69,6 +69,13 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
           window.location.replace(1);
       });
 
+      socket.on('yttrack.played', function(video_id, index){
+
+        var li = $("li.media").eq(index);
+        li.siblings().removeClass('playing');
+        li.addClass('playing');
+      });
+
       socket.on('ytplaylist.updated', function(video, plid) {
           var html = '<li class="media">\
             <div class="media-left">\
@@ -100,8 +107,12 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
     listenTrackPlayed: function() {
       $(document).on('click', 'a.track', function(e) {
         e.preventDefault();
+
+        var li = $(this).parents('li.media');
+
+        var index = li.index();
         var video_id = $(this).data('id');
-        socket.emit('yttrack.played', video_id);
+        socket.emit('yttrack.played', video_id, index);
       });
     },
 

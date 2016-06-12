@@ -3,6 +3,17 @@
   <head>
     <title>Playlists</title>
     <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+      .playing {
+        background-color: #555;
+        color: #fff;
+      }
+
+      .playing a {
+        text-decoration: none;
+        color: #fff;
+      }
+    </style>
   </head>
   <body>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
@@ -82,9 +93,26 @@
         videoId: '',
         events: {
           'onReady': onPlayerReady,
-          //'onStateChange': onPlayerStateChange
+          'onStateChange': onPlayerStateChange
         }
       });
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data == YT.PlayerState.ENDED) {
+
+        var listc = $('li.media');
+
+        if(PLAYER.currentIndex == (listc.length-1)) {
+          PLAYER.currentIndex = 0;
+        } else {
+          PLAYER.currentIndex += 1;
+        }
+
+        var nextVid = listc.eq(PLAYER.currentIndex).find('a.track').data('id');
+
+        socket.emit('yttrack.played', nextVid, PLAYER.currentIndex);
+      }
     }
 
     function onPlayerReady() {

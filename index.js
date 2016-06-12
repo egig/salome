@@ -112,8 +112,8 @@ io.on('connection', function(socket){
      io.emit('track.played', link, host);
   });
 
-  socket.on('yttrack.played', function(vid){
-     io.emit('yttrack.played', vid);
+  socket.on('yttrack.played', function(vid, index){
+     io.emit('yttrack.played', vid, index);
   });
 
   socket.on('new-playlist', function(plname){
@@ -135,7 +135,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('playlist-deleted', function(plid){
-    
+
     model.deletePlaylist(plid, function(err, plidx){
 
       if(err) {

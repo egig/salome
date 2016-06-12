@@ -4,6 +4,7 @@ window.PLAYER = (function($, socket) {
   //    after the API code downloads.
 
   return {
+    currentIndex: 0,
 
     init:function(player) {
 
@@ -13,9 +14,12 @@ window.PLAYER = (function($, socket) {
 
     listenSocketEvents: function(player) {
 
-      socket.on('yttrack.played', function(video_id){
+      var _this = this;
+      socket.on('yttrack.played', function(video_id, index){
         player.loadVideoById(video_id);
         player.playVideo();
+
+        _this.currentIndex = index;
       });
     }
   }

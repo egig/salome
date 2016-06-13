@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `playlist` (
 
 -- --------------------------------------------------------
 
-INSERT INTO `playlist` (`id`, `name`, `createdAt`, `status`) VALUES (1, `Default`, `2016-06-15 00:00:00`, 1);
+INSERT INTO `playlist` (`id`, `name`, `createdAt`, `status`) VALUES (1, 'Default', '2016-06-15 00:00:00', 1);
 
 --
 -- Table structure for table `playlist_track`

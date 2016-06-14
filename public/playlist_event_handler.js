@@ -24,7 +24,16 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
       this.listenTrackPlayed();
       this.listenChangePlaylist();
       this.listenDeletePlaylist(playlistDeletable);
+      this.initVolumeControl();
 
+    },
+
+    initVolumeControl: function() {
+      var vControl = $(volume_control).slider().on('slide', function() {
+          var v = vControl.getValue();
+          socket.emit("volume-updated", v);
+
+      }).data('slider');
     },
 
     listenChangePlaylist: function() {

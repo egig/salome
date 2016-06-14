@@ -21,6 +21,11 @@ window.PLAYER = (function($, socket) {
 
         _this.currentIndex = index;
       });
+
+      socket.on('volume-updated', function(v){
+          player.setVolume(v);
+      });
+
     }
   }
 

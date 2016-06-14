@@ -134,6 +134,10 @@ io.on('connection', function(socket){
      io.emit('playlist-changed', plid);
   });
 
+  socket.on('volume-updated', function(v){
+     io.emit('volume-updated', v);
+  });
+
   socket.on('playlist-deleted', function(plid){
 
     model.deletePlaylist(plid, function(err, plidx){

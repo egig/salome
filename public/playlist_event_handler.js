@@ -35,6 +35,15 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
             placeholder: "ui-state-highlight",
             update: function( event, ui ) {
                 // @todo save to database
+                var lis = $( "#playlist" ).find("li.media");
+
+                var ids = [];
+                for(var i=0; i<lis.length; i++ ) {
+                  var id = $(lis[i]).attr('id').substr(6);
+                  ids.push(id);
+                }
+
+                socket.emit("playlist-sorted", ids);
             }
           });
           $( "#playlist" ).disableSelection();
@@ -110,6 +119,10 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
             </div>\
           </li>';
           $(playlist).prepend(html);
+      });
+
+      socket.on('playlist-sorted', function(ids) {
+          window.location.reload(true);
       });
     },
 

@@ -28,6 +28,28 @@ module.exports = {
     */
   },
 
+  sortPlaylistTrack: function(ids, callback) {
+
+    this.create_connection();
+    this.connection.connect();
+
+    var curErr
+    for(var i=0; i<ids.length;i++) {
+      var q = "UPDATE playlist_track SET sequence="+i+" where id="+ids[i]+"; ";
+
+      this.connection.query(q, function(err, result) {
+        if(err) {
+          curErr = err;
+        }
+      });
+    }
+
+    return callback(curErr);
+
+    this.connection.end();
+
+  } ,
+
   deletePlaylist: function(plid, callback) {
     this.create_connection();
     this.connection.connect();
@@ -40,7 +62,7 @@ module.exports = {
 
           return callback(err, plid);
       });
-      
+
     });
   },
 
@@ -87,7 +109,7 @@ module.exports = {
           var query = "";
           query += "SELECT *, playlist_track.id as pltrackid FROM track JOIN playlist_track on track.id = playlist_track.track_id ";
           query += "where playlist_track.playlist_id = "+pl.id;
-          query += " order by playlist_track.id DESC";
+          query += " order by playlist_track.sequence ASC";
 
           _this.connection.query(query, function(err, tracks) {
             if(err) {

@@ -150,6 +150,16 @@ io.on('connection', function(socket){
     });
   });
 
+  socket.on('playlist-sorted', function(ids){
+    model.sortPlaylistTrack(ids, function(err) {
+      if(err) {
+        return console.log(err);
+      }
+
+        io.emit('playlist-sorted', ids);
+    })
+  });
+
 });
 
 http.listen(3000, function(){

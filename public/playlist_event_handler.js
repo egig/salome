@@ -51,11 +51,13 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
     },
 
     initVolumeControl: function() {
-      var vControl = $(volume_control).slider().on('slide', function() {
-          var v = vControl.getValue();
-          socket.emit("volume-updated", v);
-
-      }).data('slider');
+      var vControl = $(volume_control).slider({
+          min: 0,
+          max: 100,
+         change: function( event, ui ) {
+              socket.emit("volume-updated", ui.value);
+          }
+      });
     },
 
     listenChangePlaylist: function() {

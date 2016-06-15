@@ -18,6 +18,7 @@
   "dependencies": {
     "jquery": "~2.2.4",
     "bootstrap": "~3.3.6",
-    "seiyria-bootstrap-slider": "~7.1.1"
+    "seiyria-bootstrap-slider": "~7.1.1",
+    "jquery-ui": "^1.11.4"
   }
 }

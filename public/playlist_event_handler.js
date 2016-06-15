@@ -25,7 +25,20 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
       this.listenChangePlaylist();
       this.listenDeletePlaylist(playlistDeletable);
       this.initVolumeControl();
+      this.initSorting();
 
+    },
+
+    initSorting() {
+        $(function() {
+          $( "#playlist" ).sortable({
+            placeholder: "ui-state-highlight",
+            update: function( event, ui ) {
+                // @todo save to database
+            }
+          });
+          $( "#playlist" ).disableSelection();
+        });
     },
 
     initVolumeControl: function() {

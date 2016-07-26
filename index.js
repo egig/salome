@@ -103,9 +103,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('ytplaylist.updated', function(vid, plid){
-     model.insert_track(plid, vid.snippet.title, vid.snippet.thumbnails.medium.url, vid.id, io);
-
-     //io.emit('ytplaylist.updated.success', vid, plid);
+      model.insert_track(plid, vid.snippet.title, vid.snippet.thumbnails.medium.url, vid.id, io);
   });
 
   socket.on('track.played', function(link, host){
@@ -123,10 +121,10 @@ io.on('connection', function(socket){
     });
   });
 
-  socket.on('delete-track', function(pltrackid){
+  socket.on('delete-track', function(pltrackid, selector){
 
     model.delete_pltrack(pltrackid, function(){
-      io.emit('delete-track-success', pltrackid);
+      io.emit('delete-track-success', pltrackid, selector);
     });
   });
 

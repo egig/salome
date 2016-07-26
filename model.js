@@ -154,7 +154,7 @@ module.exports = {
               track_id: track_id,
             }
             _this.connection.query('INSERT INTO playlist_track SET ?', data2, function(err, resultPL){
-              io.emit('ytplaylist.updated.success', title, thumbnail_url, resultPL.insertId);
+              io.emit('ytplaylist.updated.success', title, thumbnail_url, resultPL.insertId, video_id);
             });
 
         });
@@ -168,7 +168,7 @@ module.exports = {
         }
 
         _this.connection.query(" INSERT INTO playlist_track SET ?", data2, function(err, resultPL){
-          io.emit('ytplaylist.updated.success', title, thumbnail_url, resultPL.insertId);
+          io.emit('ytplaylist.updated.success', title, thumbnail_url, resultPL.insertId, video_id);
          });
       }
     });

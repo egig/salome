@@ -72,7 +72,7 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
       $(document).on("click", '.delete-track', function(e){
         var pltrackid = $(this).data("pltrack-id");
         var deleteTrack = "li#track-"+pltrackid;
-        socket.emit("delete-track", deleteTrack);
+        socket.emit("delete-track", pltrackid, deleteTrack);
       });
     },
 
@@ -91,10 +91,6 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
           window.location.reload(true);
       });
 
-      socket.on('delete-track', function(plname) {
-        
-      });
-
       socket.on('playlist-changed', function(plid) {
           window.location.replace(plid);
       });
@@ -103,18 +99,18 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
           window.location.replace(1);
       });
 
-      socket.on('delete-track-success', function(trackid) {
-          $(trackid).slideUp();
+      socket.on('delete-track-success', function(trackid, selector) {
+          $(selector).slideUp();
       });
 
       socket.on('yttrack.played', function(video_id, index){
-
+        console.log(video_id);
         var li = $("li.media").eq(index);
         li.siblings().removeClass('playing');
         li.addClass('playing');
       });
 
-      socket.on('ytplaylist.updated.success', function(title, thumbnail_url, trackid) {
+      socket.on('ytplaylist.updated.success', function(title, thumbnail_url, trackid, videoID) {
           var html = '<li class="media" id="track-'+trackid+'">' +
       '<div class="media-left">'+
         '<a href="#">'+
@@ -122,7 +118,7 @@ window.PLAYLIST_EVENT_HANDLER = (function($, socket) {
         '</a>'+
       '</div>'+
       '<div class="media-body">'+
-        '<h4 class="media-heading"><a class="track" data-id="'+title+'" href="javascript:;">'+title+'</a></h4>'+
+        '<h4 class="media-heading"><a class="track" data-id="'+videoID+'" href="javascript:;">'+title+'</a></h4>'+
          '<button class="btn btn-xs btn-default delete-track" data-pltrack-id="'+trackid+'" >Delete</button>'+
       '</div>'+
     '</li>';

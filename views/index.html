@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+  <p>Welcome to {{ title }}</p>
+{% endblock %}
+
+
+{% block js %}
+
+    <script type="text/javascript" src="/js/router.js"> </script>
+    <script type="text/javascript">
+    // configuration
+    Router.config({ mode: 'history'});
+
+    // returning the user to the initial state
+    Router.navigate();
+
+    // adding routes
+    Router
+    .add(/about/, function() {
+        console.log('about');
+    })
+    .add(/products\/(.*)\/edit\/(.*)/, function() {
+        console.log('products', arguments);
+    })
+    .add(function() {
+        console.log('default');
+    })
+    .check('/products/12/edit/22').listen();
+
+    // forwarding
+    Router.navigate('/about');
+
+    </script>
+{% endblock %}

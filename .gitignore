@@ -1,5 +1,10 @@
-/node_modules
-/storage/*
-!/storage/.gitkeep
-/public/bower_components
-/config.json
+node_modules
+bower_components
+/config/database.json
+/npm-debug.log
+/public/css/*
+!/public/css/.gitkeep
+/public/js/*
+!/public/js/.gitkeep
+/public/img/*
+!/public/img/.gitkeep

@@ -1,13 +1,14 @@
 {
-  "name": "audoix",
+  "name": "drafterbit",
+  "description": "",
+  "main": "",
   "authors": [
     "egig <egigundari@gmail.com>"
   ],
-  "description": "",
-  "main": "",
-  "moduleType": [],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/egig/drafterbit",
+  "moduleType": [],
+  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -16,8 +17,13 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~2.2.4",
-    "bootstrap": "~3.3.6",
-    "jquery-ui": "^1.11.4"
+    "jquery-form": "^3.46.0",
+    "js-cookie": "^2.1.2",
+    "navigo": "^2.1.2",
+    "nunjucks": "~2.4.2",
+    "bootstrap": "~3.3.7"
+  },
+  "devDependencies": {
+    "bootstrap-sass": "~3.3.7"
   }
 }

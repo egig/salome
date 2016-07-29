@@ -1,6 +1,5 @@
 var express = require('express');
 var router  = express.Router();
-var User = require('../models').User;
 var jwt = require('jsonwebtoken');
 
 router.get('/login', function(req, res) {
@@ -16,7 +15,7 @@ router.post('/login', function(req, res) {
         return res.status(400).send('Password requried');
     }
 
-    User.findOne({where: {email: req.body.email}}).then(function(user){
+    /*User.findOne({where: {email: req.body.email}}).then(function(user){
 
         // @todo validate password
         if(!user){
@@ -25,7 +24,7 @@ router.post('/login', function(req, res) {
 
         var token = jwt.sign({email: req.body.email}, 's3cr3t');
         return res.status(200).json(token);
-    });
+    });*/
 });
 
 router.get('/signup', function(req, res) {

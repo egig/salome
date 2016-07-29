@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var models  = require('../models');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-  models.User
+/*  models.User
   .findAll({
     include: [ models.Task ]
   })
@@ -13,7 +12,7 @@ router.get('/', function(req, res) {
       title: 'drafterbit users test',
       users: users
     });
-  });
+});*/
 });
 
 module.exports = router;

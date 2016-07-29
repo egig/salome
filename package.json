@@ -14,15 +14,11 @@
     "express": "~4.13.4",
     "express-jwt": "^3.4.0",
     "express-session": "^1.14.0",
-    "hoek": "^4.0.2",
-    "isemail": "^2.2.0",
     "jsonwebtoken": "^7.1.6",
-    "moment": "^2.14.1",
+    "knex": "^0.11.9",
     "morgan": "~1.7.0",
     "mysql": "^2.11.1",
     "nunjucks": "^2.4.2",
-    "sequelize": "^3.23.6",
-    "sequelize-cli": "^2.4.0",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {

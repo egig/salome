@@ -13,8 +13,14 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var playlists = require('./routes/playlists');
 
+var knexFile = require('./knexfile.js')
 
 var app = express();
+
+// Database handler
+// @todo ensure environment
+var knex = require('knex')(knexFile[app.get('env')]);
+app.set('knex', knex);
 
 // view engine setup
 nunjucks.configure(path.join(__dirname, 'views'), {

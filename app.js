@@ -11,7 +11,7 @@ var expressJWT = require('express-jwt');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var playlists = require('./routes/playlists');
+var apiRoutes = require('./routes/api');
 
 var knexFile = require('./knexfile.js')
 
@@ -55,7 +55,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/playlists', playlists);
+app.use('/api', apiRoutes);
 
 // HTML5 history api fallback
 app.use(function (req, res, next) {

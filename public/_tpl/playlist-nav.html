@@ -1,0 +1,8 @@
+<ul>
+    {% if playlists.length %}
+        {% for pl in playlists %}
+            <li><a data-navigo href="/playlist/{{ pl.id }}">{{ pl.name }}</a></li>
+        {% endfor %}
+    {% endif %}
+    <li><a href="javascript:;">Add Playlist</a></li>
+</ul>

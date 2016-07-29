@@ -7,11 +7,7 @@
   </head>
   <body>
 
-  <h1>test</h1>
-  <p>Welcome to testapp</p>
-  <a data-navigo href="about">about</a>
-  <br/>
-  <a data-navigo href="products">products</a>
+  <div id="playlistNav"></div>
   <div id="content"></div>
 
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"> </script>
@@ -22,24 +18,33 @@
     nunjucks.configure('/_tpl');
     var router = new Navigo();
 
-    router.on('/about', function () {
-        var res = nunjucks.render('about.html', { username: 'James' });
-        $('#content').html(res);
-    });
-
     router.on({
-        '/products': function () {
-            console.log('products')
+        '/playlist/:id': function (param) {
+
+            $.get('/api/playlist/'+param.id+'/tracks', function(tracks) {
+                console.log(tracks);
+            });
+        },
+        '/': function() {
+            $('#content').html('home');
         }
     });
+    router.resolve();
 
     // @todo: Home vs not Found
     // Similiar problem https://github.com/krasimir/navigo/issues/31
-    router.on(function(){
-        $('body').html("Not found");
-    });
+    // router.on(function(){
+    //    $('body').html("Not found");
+    // });
 
-    router.resolve();
+    // request playlists
+    // @todo configure base path
+    $.get('/api/playlists', function(playlists) {
+        var plNav = nunjucks.render('playlist-nav.html', {playlists: playlists});
+        $(playlistNav).html(plNav);
+
+        router.updatePageLinks();
+    });
     </script>
 
   </body>

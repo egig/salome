@@ -1,8 +1,6 @@
-<ul>
-    {% if playlists.length %}
-        {% for pl in playlists %}
-            <li><a data-navigo href="/playlist/{{ pl.id }}">{{ pl.name }}</a></li>
-        {% endfor %}
-    {% endif %}
-    <li><a href="javascript:;">Add Playlist</a></li>
+<ul class="nav nav-pills nav-stacked">
+  {% for pl in playlists %}
+    <li><a href="/playlist/{{ pl.id }}" data-navigo>{{ pl.name }}</a></li>
+  {% endfor %}
+  <li><a  data-toggle="modal" data-target="#add_playlist_modal" href="javascript:;" id="add_playlist">Tambah Playlist</a></li>
 </ul>

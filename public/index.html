@@ -3,33 +3,33 @@
   <head>
     <meta charset="utf-8">
     <title>testapp</title>
-    <link rel="stylesheet" href="/css/drafterbit-bootstrap.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
   </head>
   <body>
 
-  <div id="playlistNav"></div>
-  <div id="content"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div id="playlistNav"></div>
+      </div>
+      <div class="col-md-9">
+        <div id="content"></div>
+      </div>
+    </div>
+  </div>
 
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"> </script>
     <script type="text/javascript" src="/bower_components/navigo/lib/navigo.min.js"> </script>
     <script type="text/javascript" src="/bower_components/nunjucks/browser/nunjucks.min.js"> </script>
+    <script type="text/javascript" src="/js/routes.js"> </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script> var socket = new io(); </script>
+    <script src="/js/playlist_event_handler.js"> </script>
     <script type="text/javascript">
     // configuration
     nunjucks.configure('/_tpl');
     var router = new Navigo();
-
-    router.on({
-        '/playlist/:id': function (param) {
-
-            $.get('/api/playlist/'+param.id+'/tracks', function(tracks) {
-                console.log(tracks);
-            });
-        },
-        '/': function() {
-            $('#content').html('home');
-        }
-    });
-    router.resolve();
+    ROUTE_CONFIG.init(router, nunjucks);
 
     // @todo: Home vs not Found
     // Similiar problem https://github.com/krasimir/navigo/issues/31

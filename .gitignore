@@ -3,8 +3,6 @@ bower_components
 /npm-debug.log
 /public/css/*
 !/public/css/.gitkeep
-/public/js/*
-!/public/js/.gitkeep
 /public/img/*
 !/public/img/.gitkeep
 /knexfile.js

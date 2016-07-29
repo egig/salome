@@ -23,9 +23,7 @@ var knex = require('knex')(knexFile[app.get('env')]);
 app.set('knex', knex);
 
 var model = require('./model')(knex);
-
-var http = require('http').Server(app);
-var opSocket = require('./socket')(http, model);
+app.set('model', model);
 
 // view engine setup
 nunjucks.configure(path.join(__dirname, 'views'), {

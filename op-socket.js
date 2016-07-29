@@ -1,5 +1,6 @@
-module.exports = function(http, model) {
-  var io = require('socket.io')(http);
+module.exports = function(io, app) {
+
+  var model = app.get('model');
 
   io.on('connection', function(socket){
 

@@ -1,6 +1,4 @@
-<ul class="nav nav-pills nav-stacked">
   {% for pl in playlists %}
-    <li><a href="/playlist/{{ pl.id }}" data-navigo>{{ pl.name }}</a></li>
+    <a class="mdl-navigation__link" href="/playlist/{{ pl.id }}" data-navigo>{{ pl.name }}</a>
   {% endfor %}
-  <li><a  data-toggle="modal" data-target="#add_playlist_modal" href="javascript:;" id="add_playlist">Tambah Playlist</a></li>
-</ul>
+  <a class="mdl-navigation__link" href="#">Add Playist</a>

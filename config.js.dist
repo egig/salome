@@ -1,0 +1,25 @@
+module.exports = {
+  basePath: "/desk",
+  secret: "CHANGE THIS PLEASE",
+  mainModuleName: "__main",
+
+  // SQLITE3
+  db : {
+    client: 'sqlite3',
+    connection: {
+      filename: "./database/drafterbit.sqlite"
+    },
+    useNullAsDefault: true
+  }
+
+  // MYSQL
+  db : {
+    client: 'mysql',
+    connection: {
+      host     : '127.0.0.1',
+      user     : 'root',
+      password : '',
+      database : 'drafterbit'
+    }
+  }
+}

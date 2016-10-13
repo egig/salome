@@ -5,4 +5,4 @@ bower_components
 !/public/css/.gitkeep
 /public/img/*
 !/public/img/.gitkeep
-/knexfile.js
+/config.js

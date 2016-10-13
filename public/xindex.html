@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>testapp</title>
+    <link rel="stylesheet" type="text/css" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/bower_components/jquery-ui/themes/ui-lightness/jquery-ui.min.css" />
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+             Realtime Shared Youtube Playlist
+          </a>
+        </div>
+      </div>
+    </nav>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div id="playlistNav"></div>
+      </div>
+      <div class="col-md-9">
+        <div style="background: #333; text-align: center;">
+          <div id="player"></div>
+        </div>
+        Volume <div id="volume_control"></div>
+        <div id="content"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="add_playlist_modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST" id="add_playlist_form">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Add Playlist</h4>
+          </div>
+          <div class="modal-body">
+              <label>Playlist Name (without space)</label>
+              <input type="text" class="form-control" name="playlist_name">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+    <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"> </script>
+    <script src="/bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/bower_components/navigo/lib/navigo.min.js"> </script>
+    <script type="text/javascript" src="/bower_components/nunjucks/browser/nunjucks.min.js"> </script>
+    <script type="text/javascript" src="/js/routes.js"> </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script> var socket = new io(); </script>
+    <script type="text/javascript">
+    // configuration
+    nunjucks.configure('/_tpl');
+    var router = new Navigo();
+    ROUTE_CONFIG.init(router, nunjucks);
+
+    // @todo: Home vs not Found
+    // Similiar problem https://github.com/krasimir/navigo/issues/31
+    // router.on(function(){
+    //    $('body').html("Not found");
+    // });
+
+    // request playlists
+    // @todo configure base path
+    $.get('/api/playlists', function(playlists) {
+        var plNav = nunjucks.render('playlist-nav.html', {playlists: playlists});
+        $(playlistNav).html(plNav);
+
+        router.updatePageLinks();
+    });
+
+    var vControl = $(volume_control).slider({
+        min: 0,
+        max: 100,
+       change: function( event, ui ) {
+            socket.emit("volume-updated", ui.value);
+        }
+    });
+    </script>
+
+    <script>
+
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: '',
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data == YT.PlayerState.ENDED) {
+
+        var listc = $('li.media');
+
+        if(PLAYER.currentIndex == (listc.length-1)) {
+          PLAYER.currentIndex = 0;
+        } else {
+          PLAYER.currentIndex += 1;
+        }
+
+        var nextVid = listc.eq(PLAYER.currentIndex).find('a.track').data('id');
+
+        socket.emit('yttrack.played', nextVid, PLAYER.currentIndex);
+      }
+    }
+
+    function onPlayerReady() {
+       // listent track played
+         $(document).on('click', 'a.track', function(e) {
+           e.preventDefault();
+
+           var li = $(this).parents('li.media');
+
+           var index = li.index();
+           var video_id = $(this).data('id');
+           socket.emit('track.played', video_id, index);
+         });
+    }
+    </script>
+
+  </body>
+</html>

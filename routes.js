@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 
-/* GET playlists listing. */
-router.get('/playlists', function(req, res) {
+router.get('/api/playlists', function(req, res) {
 
     var knex = req.app.get('knex');
     knex('playlists').select('*').then(function(playlists){
@@ -11,8 +10,7 @@ router.get('/playlists', function(req, res) {
     });
 });
 
-/* GET playlists listing. */
-router.get('/playlist/:id/tracks', function(req, res) {
+router.get('/api/playlist/:id/tracks', function(req, res) {
 
     var knex = req.app.get('knex');
     knex.select('tracks.*', 'playlists_tracks.playlists_id', 'playlists_tracks.id as pltrackid')

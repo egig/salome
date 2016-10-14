@@ -14,8 +14,8 @@ module.exports = function(io, app) {
         model.insertTrack(plid, vid.snippet.title, vid.snippet.thumbnails.medium.url, vid.id, io);
     });
 
-    socket.on('track.played', function(link, host){
-       io.emit('track.played', link, host);
+    socket.on('track.played', function(video_id, index){
+       io.emit('track.played', video_id, index);
     });
 
     socket.on('playlist.new', function(plname){

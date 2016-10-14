@@ -5,7 +5,8 @@ exports.seed = function(knex, Promise) {
     .then(function () {
       return Promise.all([
         // Inserts seed entries
-        knex('playlists').insert({id: 1, name: 'Default'})
+        knex('playlists').insert({id: 1, name: 'Default'}),
+        knex('playlists').insert({id: 2, name: 'Dummy'})
       ]);
     });
 };

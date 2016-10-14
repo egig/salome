@@ -7,7 +7,7 @@ exports.seed = function(knex, Promise) {
         // Inserts seed entries
         knex('playlists_tracks').insert({playlists_id:1, tracks_id:1, sequence:1 }),
         knex('playlists_tracks').insert({playlists_id:1, tracks_id:2, sequence:2 }),
-        knex('playlists_tracks').insert({playlists_id:1, tracks_id:3, sequence:3 })
+        knex('playlists_tracks').insert({playlists_id:2, tracks_id:3, sequence:1 })
       ]);
     });
 };

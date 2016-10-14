@@ -30,19 +30,51 @@ function onPlayerStateChange(event) {
 
     var nextVid = listc.eq(PLAYER.currentIndex).find('a.track').data('id');
 
-    socket.emit('yttrack.played', nextVid, PLAYER.currentIndex);
+    socket.emit('track.played', nextVid, PLAYER.currentIndex);
   }
 }
 
 function onPlayerReady() {
-   // listent track played
-     $(document).on('click', 'a.track', function(e) {
-       e.preventDefault();
-
-       var li = $(this).parents('li.media');
-
-       var index = li.index();
-       var video_id = $(this).data('id');
-       socket.emit('track.played', video_id, index);
+     // listen event
+     socket.on('track.played', function(video_id, index){
+       player.loadVideoById(video_id);
+       player.playVideo();
      });
 }
+
+// Configuser view
+nunjucks.configure('/_tpl');
+
+function listenSocketEvents() {
+      socket.on('new-playlist', function(plname) {
+          window.location.reload(true);
+      });
+
+      socket.on('playlist.changed', function(plid) {
+        $.get('/api/playlist/'+plid+'/tracks', function(tracks) {
+            var c =  nunjucks.render('tracks.html', {tracks: tracks, playlist_id: plid});
+            $('#tracks-container').html(c);
+        });
+      });
+
+      socket.on('playlist-deleted', function(plid) {
+          window.location.replace(1);
+      });
+
+      socket.on('delete-track-success', function(trackid, selector) {
+          $(selector).slideUp();
+      });
+
+      socket.on('track.played', function(video_id, index){
+
+        // player.loadVideoById(video_id);
+        // player.playVideo();
+
+        // @todo add playing state
+      });
+
+      socket.on('playlist-sorted', function(ids) {
+          window.location.reload(true);
+      });
+}
+listenSocketEvents();

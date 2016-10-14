@@ -12,9 +12,11 @@ router.get('/api/playlists', function(req, res) {
 
 router.get('/api/playlist/:id/tracks', function(req, res) {
 
+    var id = req.params.id;
     var knex = req.app.get('knex');
     knex.select('tracks.*', 'playlists_tracks.playlists_id', 'playlists_tracks.id as pltrackid')
       .from('playlists_tracks')
+      .where('playlists_tracks.playlists_id', id)
       .leftJoin('tracks', 'tracks.id', 'playlists_tracks.tracks_id')
       .then(function(tracks){
           return res.json(tracks);

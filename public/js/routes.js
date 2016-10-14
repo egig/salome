@@ -4,10 +4,7 @@ var ROUTE_CONFIG = (function($) {
      init: function(router, nunjucks) {
        router.on({
            '/playlist/:id': function (param) {
-               $.get('/api/playlist/'+param.id+'/tracks', function(tracks) {
-                   var c =  nunjucks.render('tracks.html', {tracks: tracks, playlist_id: param.id});
-                   $('#tracks-container').html(c);
-               });
+             socket.emit('playlist.changed', param.id);
            },
        });
 

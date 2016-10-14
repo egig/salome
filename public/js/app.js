@@ -15,6 +15,18 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
       this.handleSearchForm();
       this.lisenAddTrackFromSearch();
       this.handleNewPlaylist();
+      this.listenDeleteTrack();
+    },
+
+    listenDeleteTrack: function() {
+      $(document).on('click', 'a.track-delete', function(e) {
+        e.preventDefault();
+
+        alert('ok');
+        var trackid = $(this).data('track-id');
+        socket.emit('track.deleted', trackid, App.currentPlaylistID);
+      })
+
     },
 
     loadPlaylists: function() {
@@ -53,14 +65,6 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
             App.currentPlaylistID =  plid;
           });
 
-          socket.on('playlist-deleted', function(plid) {
-              window.location.replace(1);
-          });
-
-          socket.on('delete-track-success', function(trackid, selector) {
-              $(selector).slideUp();
-          });
-
           socket.on('track.played', function(video_id, index){
             // @todo add playing state
           });
@@ -69,9 +73,10 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
             App.reloadPlaylist();
           });
 
-          socket.on('playlist-sorted', function(ids) {
-              window.location.reload(true);
+          socket.on('track.deleted', function(video_id, plid){
+            App.reloadPlaylist();
           });
+
     },
 
     handleSearchForm: function() {

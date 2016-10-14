@@ -2,6 +2,18 @@ var express = require('express');
 var router = express.Router();
 
 
+router.get('/', function(req, res) {
+  res.render('index.html')
+});
+
+router.get('/player', function(req, res) {
+  res.render('player.html')
+});
+
+router.get('/playlist*', function(req, res) {
+  res.render('playlist.html')
+});
+
 router.get('/api/playlists', function(req, res) {
 
     var knex = req.app.get('knex');

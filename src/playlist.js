@@ -18,6 +18,10 @@ class PlaylistModel extends Model {
   insert(name) {
     return this.knex('playlists').insert({ name: name});
   }
+
+  deleteTrack(id, track_id) {
+    return this.knex('playlists_tracks').where({playlists_id: id, tracks_id: track_id}).delete();
+  }
 }
 
 export default PlaylistModel;

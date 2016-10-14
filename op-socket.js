@@ -30,15 +30,16 @@ module.exports = function(io, app) {
       });
     });
 
-    socket.on('track.delete', function(pltrackid, selector){
-
-      model.deletePlaylistTrack(pltrackid, function(){
-        io.emit('track.delete', pltrackid, selector);
-      });
-    });
-
     socket.on('playlist.changed', function(plid){
        io.emit('playlist.changed', plid);
+    });
+
+    socket.on('track.deleted', function(track_id, plid){
+        var pM = app.model(app._ROOT+'/lib/playlist');
+
+        pM.deleteTrack(plid, track_id).then(function(){
+          io.emit('track.deleted', track_id, plid);
+        });
     });
 
     socket.on('volume.updated', function(v){

@@ -15,6 +15,10 @@ function listenSocketEvents() {
         reloadPlaylist();
       });
 
+      socket.on('track.deleted', function(video_id, plid){
+        reloadPlaylist();
+      });
+
       socket.on('playlist.new', function(plname) {
         //..
       });

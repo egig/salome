@@ -14,6 +14,7 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
       this.listenClickPlay();
       this.handleSearchForm();
       this.lisenAddTrackFromSearch();
+      this.handleNewPlaylist();
     },
 
     loadPlaylists: function() {
@@ -38,8 +39,9 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
     },
 
     listenSocketEvents: function() {
-          socket.on('new-playlist', function(plname) {
-              window.location.reload(true);
+          socket.on('playlist.new', function(plname, plid) {
+            $('#playlistNav').append('<a class="mdl-navigation__link" href="/playlist/'+plid+'" data-navigo>'+plname+'</a>')
+            router.updatePageLinks();
           });
 
           socket.on('playlist.changed', function(plid) {
@@ -117,6 +119,15 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
       $.get('/api/playlist/'+plid+'/tracks', function(tracks) {
           var c =  nunjucks.render('tracks.html', {tracks: tracks, playlist_id: plid});
           $('#tracks-container').html(c);
+      });
+    },
+
+    handleNewPlaylist: function() {
+      $('#add-playlist-form').on('submit', function(e){
+        e.preventDefault();
+
+        var name = $(this).find('[name="playlist-name"]').val();
+          socket.emit('playlist.new', name);
       });
     }
   }

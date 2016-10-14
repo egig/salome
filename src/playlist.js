@@ -14,6 +14,10 @@ class PlaylistModel extends Model {
       }
     });
   }
+
+  insert(name) {
+    return this.knex('playlists').insert({ name: name});
+  }
 }
 
 export default PlaylistModel;

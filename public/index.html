@@ -14,6 +14,12 @@
       <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">Playlists</span>
         <nav class="mdl-navigation" id="playlistNav"> </nav>
+        <form id="add-playlist-form" style="margin:0 10px 0 30px;">
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="playlist-name" name="playlist-name">
+            <label class="mdl-textfield__label" for="playlist-name">Add Playlist</label>
+          </div>
+        </form>
       </div>
       <main class="mdl-layout__content">
         <div class="page-content">
@@ -21,7 +27,7 @@
           <form action="#">
             <div class="mdl-textfield mdl-js-textfield">
               <input class="mdl-textfield__input" type="text" id="search-q">
-              <label class="mdl-textfield__label" for="sample1">Search youtube video...</label>
+              <label class="mdl-textfield__label" for="search-q">Search youtube video...</label>
             </div>
           </form>
           <div id="search-result"> </div>

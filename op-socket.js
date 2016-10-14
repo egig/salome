@@ -23,8 +23,10 @@ module.exports = function(io, app) {
 
     socket.on('playlist.new', function(plname){
 
-      model.addPlaylist(plname, function(){
-        io.emit('playlist.new', plname);
+      var pM = app.model(app._ROOT+'/lib/playlist');
+
+      pM.insert(plname).then(function(a){
+        io.emit('playlist.new', plname, a[0]);
       });
     });
 

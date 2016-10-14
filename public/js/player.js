@@ -22,7 +22,7 @@ var CURRENT_PLAYLIST_ID = null;
 function onPlayerStateChange(event) {
   if (event.data == YT.PlayerState.ENDED) {
 
-    var listc = $('li.media');
+    var listc = $('ul.track-list').find('li');
 
     if(PLAYER.currentIndex == (listc.length-1)) {
       PLAYER.currentIndex = 0;
@@ -61,8 +61,8 @@ function listenSocketEvents() {
         reloadPlaylist();
       });
 
-      socket.on('new-playlist', function(plname) {
-          window.location.reload(true);
+      socket.on('playlist.new', function(plname) {
+        //..
       });
 
       socket.on('playlist-deleted', function(plid) {

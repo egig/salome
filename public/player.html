@@ -7,28 +7,20 @@
     <link rel="stylesheet" href="/bower_components/material-design-lite/material.min.css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Three Line List with secondary info and action -->
+    <style>
+    .track-list {
+      width: 650px;
+      margin: auto;
+    }
+    </style>
   </head>
   <body>
-    <!-- No header, and the drawer stays open on larger screens (fixed drawer). -->
-    <div class="mdl-layout mdl-js-layout">
-      <main class="mdl-layout__content">
-        <div class="page-content">
-          <div style="background: #333; text-align: center;">
-            <div id="player"></div>
-          </div>
 
-          <!-- Three Line List with secondary info and action -->
-          <style>
-          .track-list {
-            width: 650px;
-            margin: auto;
-          }
-          </style>
-
-          <div id="tracks-container"></div>
-        </div>
-      </main>
+    <div style="background: #333; text-align: center;">
+      <div id="o-player"></div>
     </div>
+    <div id="tracks-container"></div>
 
     <script type="text/javascript" src="/bower_components/material-design-lite/material.min.js"></script>
     <script type="text/javascript" src="/bower_components/jquery/dist/jquery.min.js"></script>
@@ -36,6 +28,69 @@
     <script type="text/javascript" src="/bower_components/nunjucks/browser/nunjucks.min.js"> </script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script> var socket = new io(); </script>
+    <script type="text/javascript">
+    var CURRENT_PLAYLIST_ID = null;
+    var CURRENT_INDEX = 0;
+
+    var tag = document.createElement('script');
+
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+var player;
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('o-player', {
+        height: '390',
+        width: '640',
+        videoId: 'M7lc1UVf-VE',
+        events: {
+            'onReady': onReady
+        }
+    });
+}
+
+function onReady() {
+    player.addEventListener('onStateChange', function(event) {
+        console.log('State is:', event.data);
+
+        if (event.data == YT.PlayerState.ENDED) {
+
+          var listc = $('ul.track-list').find('li');
+
+          if(CURRENT_INDEX == (listc.length-1)) {
+            CURRENT_INDEX = 0;
+          } else {
+            CURRENT_INDEX += 1;
+          }
+
+          var nextVid = listc.eq(CURRENT_INDEX).find('a.track').data('id');
+
+          socket.emit('track.played', nextVid, CURRENT_INDEX);
+        }
+    });
+
+    socket.on('track.played', function(video_id, index){
+      player.loadVideoById(video_id);
+      player.playVideo();
+    });
+}
+
+
+    /*function onPlayerReady() {
+      console.log("Player Ready");
+
+      player.addEventListener('onStateChange', function(e) {
+           console.log('State is:', e.data);
+       });
+         // listen event
+         socket.on('track.played', function(video_id, index){
+           player.loadVideoById(video_id);
+           player.playVideo();
+         });
+    }*/
+
+    </script>
     <script type="text/javascript" src="/js/player.js"></script>
   </body>
 </html>

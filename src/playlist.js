@@ -22,6 +22,13 @@ class PlaylistModel extends Model {
   deleteTrack(id, track_id) {
     return this.knex('playlists_tracks').where({playlists_id: id, tracks_id: track_id}).delete();
   }
+
+  delete(id) {
+    var _this = this;
+    return this.knex('playlists_tracks').where('playlists_id', id).delete().then(function(){
+      return _this.knex('playlists').where('id', id).delete();
+    });
+  }
 }
 
 export default PlaylistModel;

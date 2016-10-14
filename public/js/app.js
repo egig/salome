@@ -16,13 +16,30 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
       this.lisenAddTrackFromSearch();
       this.handleNewPlaylist();
       this.listenDeleteTrack();
+      this.listenDeletePlaylist();
+    },
+
+    listenDeletePlaylist: function() {
+      $(document).on('click', 'a.playlist-delete', function(e) {
+        e.preventDefault();
+
+        if (!confirm("Are You Sure ?")) {
+          return false;
+        }
+
+        console.log(App.currentPlaylistID);
+
+        socket.emit('playlist.deleted', App.currentPlaylistID);
+      })
     },
 
     listenDeleteTrack: function() {
       $(document).on('click', 'a.track-delete', function(e) {
         e.preventDefault();
 
-        alert('ok');
+        if (!confirm("Are You Sure ?")) {
+          return false;
+        }
         var trackid = $(this).data('track-id');
         socket.emit('track.deleted', trackid, App.currentPlaylistID);
       })
@@ -51,10 +68,10 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
     },
 
     listenSocketEvents: function() {
-          socket.on('playlist.new', function(plname, plid) {
-            $('#playlistNav').append('<a class="mdl-navigation__link" href="/playlist/'+plid+'" data-navigo>'+plname+'</a>')
-            router.updatePageLinks();
-          });
+      var _this = this;
+        socket.on('playlist.new', function(plname, plid) {
+          _this.loadPlaylists();
+        });
 
           socket.on('playlist.changed', function(plid) {
             $.get('/api/playlist/'+plid+'/tracks', function(tracks) {
@@ -77,6 +94,10 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
             App.reloadPlaylist();
           });
 
+          socket.on('playlist.deleted', function(plid){
+            _this.loadPlaylists();
+            router.navigate('/list/1'); //to default
+          });
     },
 
     handleSearchForm: function() {

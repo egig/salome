@@ -42,20 +42,16 @@ module.exports = function(io, app) {
         });
     });
 
-    socket.on('volume.updated', function(v){
-       io.emit('volume.updated', v);
+    socket.on('playlist.deleted', function(plid){
+        var pM = app.model(app._ROOT+'/lib/playlist');
+
+        pM.delete(plid).then(function(){
+          io.emit('playlist.deleted', plid);
+        });
     });
 
-    socket.on('playlist.deleted', function(plid){
-
-      model.deletePlaylist(plid, function(err, plidx){
-
-        if(err) {
-          return console.log(err);
-        }
-
-        io.emit('playlist.deleted', plidx);
-      });
+    socket.on('volume.updated', function(v){
+       io.emit('volume.updated', v);
     });
 
     socket.on('playlist.sorted', function(ids){

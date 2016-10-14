@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Youtube Playlist Barengan</title>
     <link rel="stylesheet" href="/bower_components/material-design-lite/material.min.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   </head>
   <body>
@@ -12,24 +13,20 @@
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
       <div class="mdl-layout__drawer">
         <span class="mdl-layout-title">Playlists</span>
-        <nav class="mdl-navigation" id="playlistNav">
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-          <a class="mdl-navigation__link" href="">Link</a>
-        </nav>
+        <nav class="mdl-navigation" id="playlistNav"> </nav>
       </div>
       <main class="mdl-layout__content">
         <div class="page-content">
-          <!-- Three Line List with secondary info and action -->
-          <style>
-          .demo-list-three {
-            width: 650px;
-            margin: auto;
-          }
-          </style>
-
+          <div class="content-container">
+          <form action="#">
+            <div class="mdl-textfield mdl-js-textfield">
+              <input class="mdl-textfield__input" type="text" id="search-q">
+              <label class="mdl-textfield__label" for="sample1">Search youtube video...</label>
+            </div>
+          </form>
+          <div id="search-result"> </div>
           <div id="tracks-container"></div>
+        </div>
         </div>
       </main>
     </div>

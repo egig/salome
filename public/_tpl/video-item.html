@@ -1,0 +1,17 @@
+<li class="mdl-list__item mdl-list__item--three-line">
+  <span class="mdl-list__item-primary-content">
+    <a href="#" data-id="{{ item.id.videoId }}" class="track">
+      <img height="40px" class="media-object" src="{{ item.snippet.thumbnails.default.url }}">
+    </a>
+    <b>{{ item.snippet.title }}</b>
+    <span class="mdl-list__item-text-body">{{ item.snippet.description }}</span>
+  </span>
+  <span class="mdl-list__item-secondary-content">
+    <a class="mdl-list__item-secondary-action add-track" href="javascript:;"
+      data-video-id="{{ item.id.videoId }}"
+      data-video-title="{{ item.snippet.title }}"
+      data-video-thumbnail="{{ item.snippet.thumbnails.default.url }}"
+    >
+      <i class="material-icons">play_for_work</i></a>
+  </span>
+</li>

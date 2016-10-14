@@ -1,6 +1,5 @@
 module.exports = function(io, app) {
 
-  var model = app.get('model');
 
   io.on('connection', function(socket){
 
@@ -10,12 +9,16 @@ module.exports = function(io, app) {
         console.log('user disconnected');
     });
 
-    socket.on('playlist.updated', function(vid, plid){
-        model.insertTrack(plid, vid.snippet.title, vid.snippet.thumbnails.medium.url, vid.id, io);
-    });
-
     socket.on('track.played', function(video_id, index){
        io.emit('track.played', video_id, index);
+    });
+
+    socket.on('track.added', function(video_id, title, thumbnail, playlist_id){
+      //insert track here
+      var pM = app.model(app._ROOT+'/lib/playlist');
+      pM.insertTrack(playlist_id, video_id, title, thumbnail).then(function(){
+        io.emit('track.added', video_id, title, thumbnail, playlist_id);
+      });
     });
 
     socket.on('playlist.new', function(plname){

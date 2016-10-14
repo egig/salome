@@ -17,6 +17,8 @@ function onYouTubeIframeAPIReady() {
   });
 }
 
+var CURRENT_PLAYLIST_ID = null;
+
 function onPlayerStateChange(event) {
   if (event.data == YT.PlayerState.ENDED) {
 
@@ -46,15 +48,21 @@ function onPlayerReady() {
 nunjucks.configure('/_tpl');
 
 function listenSocketEvents() {
-      socket.on('new-playlist', function(plname) {
-          window.location.reload(true);
-      });
 
       socket.on('playlist.changed', function(plid) {
         $.get('/api/playlist/'+plid+'/tracks', function(tracks) {
             var c =  nunjucks.render('tracks.html', {tracks: tracks, playlist_id: plid});
             $('#tracks-container').html(c);
+            CURRENT_PLAYLIST_ID = plid;
         });
+      });
+
+      socket.on('track.added', function(video_id, title, thumbnail, plid){
+        reloadPlaylist();
+      });
+
+      socket.on('new-playlist', function(plname) {
+          window.location.reload(true);
       });
 
       socket.on('playlist-deleted', function(plid) {
@@ -78,3 +86,11 @@ function listenSocketEvents() {
       });
 }
 listenSocketEvents();
+
+function reloadPlaylist() {
+  var plid = CURRENT_PLAYLIST_ID;
+  $.get('/api/playlist/'+plid+'/tracks', function(tracks) {
+      var c =  nunjucks.render('tracks.html', {tracks: tracks, playlist_id: plid});
+      $('#tracks-container').html(c);
+  });
+}

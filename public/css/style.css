@@ -1,0 +1,15 @@
+.content-container {
+  margin-left: 60px;
+}
+
+.track-list {
+  width: 650px;
+}
+
+#search-result {
+  border: 1px solid #333;
+  display: none;
+  max-width: 650px;
+  max-height: 400px;
+  overflow: auto;
+}

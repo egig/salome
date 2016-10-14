@@ -1,9 +1,5 @@
 node_modules
 bower_components
 /npm-debug.log
-/public/css/*
-!/public/css/.gitkeep
-/public/img/*
-!/public/img/.gitkeep
 /config.js
 /lib

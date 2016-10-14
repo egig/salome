@@ -34,62 +34,47 @@
 
     var tag = document.createElement('script');
 
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-var player;
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('o-player', {
-        height: '390',
-        width: '640',
-        videoId: 'M7lc1UVf-VE',
-        events: {
-            'onReady': onReady
-        }
-    });
-}
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('o-player', {
+            height: '390',
+            width: '640',
+            videoId: 'M7lc1UVf-VE',
+            events: {
+                'onReady': onReady
+            }
+        });
+    }
 
-function onReady() {
-    player.addEventListener('onStateChange', function(event) {
-        console.log('State is:', event.data);
+    function onReady() {
+        player.addEventListener('onStateChange', function(event) {
+            console.log('State is:', event.data);
 
-        if (event.data == YT.PlayerState.ENDED) {
+            if (event.data == YT.PlayerState.ENDED) {
 
-          var listc = $('ul.track-list').find('li');
+              var listc = $('ul.track-list').find('li');
 
-          if(CURRENT_INDEX == (listc.length-1)) {
-            CURRENT_INDEX = 0;
-          } else {
-            CURRENT_INDEX += 1;
-          }
+              if(CURRENT_INDEX == (listc.length-1)) {
+                CURRENT_INDEX = 0;
+              } else {
+                CURRENT_INDEX += 1;
+              }
 
-          var nextVid = listc.eq(CURRENT_INDEX).find('a.track').data('id');
+              var nextVid = listc.eq(CURRENT_INDEX).find('a.track').data('id');
 
-          socket.emit('track.played', nextVid, CURRENT_INDEX);
-        }
-    });
+              socket.emit('track.played', nextVid, CURRENT_INDEX);
+            }
+        });
 
-    socket.on('track.played', function(video_id, index){
-      player.loadVideoById(video_id);
-      player.playVideo();
-    });
-}
-
-
-    /*function onPlayerReady() {
-      console.log("Player Ready");
-
-      player.addEventListener('onStateChange', function(e) {
-           console.log('State is:', e.data);
-       });
-         // listen event
-         socket.on('track.played', function(video_id, index){
-           player.loadVideoById(video_id);
-           player.playVideo();
-         });
-    }*/
-
+        socket.on('track.played', function(video_id, index){
+          player.loadVideoById(video_id);
+          player.playVideo();
+        });
+    }
     </script>
     <script type="text/javascript" src="/js/player.js"></script>
   </body>

@@ -2,10 +2,9 @@
     {% for t in tracks %}
     <li class="mdl-list__item mdl-list__item--three-line">
       <span class="mdl-list__item-primary-content">
-        <a href="#" data-id="{{ t.video_id }}" class="track">
           <img height="40px" class="media-object" src="{{ t.thumbnail_url }}">
-        </a>
         <span>{{ t.title }}</span>
+        <a href="#" data-id="{{ t.video_id }}" class="track">Play </a> |
         <span><a class="track-delete" href="javascript:;" data-track-id="{{ t.id }}">Delete</a></span>
         <!--DESCRIPTION COMING SOON<span class="mdl-list__item-text-body">
           Bryan Cranston played the role of Walter in Breaking Bad. He is also known

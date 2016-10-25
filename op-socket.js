@@ -9,8 +9,8 @@ module.exports = function(io, app) {
         console.log('user disconnected');
     });
 
-    socket.on('track.played', function(video_id, index){
-       io.emit('track.played', video_id, index);
+    socket.on('track.played', function(video_id, index, plid){
+       io.emit('track.played', video_id, index, plid);
     });
 
     socket.on('track.added', function(video_id, title, thumbnail, playlist_id){

@@ -63,7 +63,7 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
          var li = $(this).parents('li');
          var index = li.index();
          var video_id = $(this).data('id');
-         socket.emit('track.played', video_id, index);
+         socket.emit('track.played', video_id, index, App.currentPlaylistID);
        });
     },
 
@@ -82,7 +82,7 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
             App.currentPlaylistID =  plid;
           });
 
-          socket.on('track.played', function(video_id, index){
+          socket.on('track.played', function(video_id, index, plid){
             // @todo add playing state
           });
 

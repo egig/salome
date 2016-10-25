@@ -28,54 +28,6 @@
     <script type="text/javascript" src="/bower_components/nunjucks/browser/nunjucks.min.js"> </script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <script> var socket = new io(); </script>
-    <script type="text/javascript">
-    var CURRENT_PLAYLIST_ID = null;
-    var CURRENT_INDEX = 0;
-
-    var tag = document.createElement('script');
-
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    var player;
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('o-player', {
-            height: '390',
-            width: '640',
-            videoId: 'M7lc1UVf-VE',
-            events: {
-                'onReady': onReady
-            }
-        });
-    }
-
-    function onReady() {
-        player.addEventListener('onStateChange', function(event) {
-            console.log('State is:', event.data);
-
-            if (event.data == YT.PlayerState.ENDED) {
-
-              var listc = $('ul.track-list').find('li');
-
-              if(CURRENT_INDEX == (listc.length-1)) {
-                CURRENT_INDEX = 0;
-              } else {
-                CURRENT_INDEX += 1;
-              }
-
-              var nextVid = listc.eq(CURRENT_INDEX).find('a.track').data('id');
-
-              socket.emit('track.played', nextVid, CURRENT_INDEX);
-            }
-        });
-
-        socket.on('track.played', function(video_id, index){
-          player.loadVideoById(video_id);
-          player.playVideo();
-        });
-    }
-    </script>
     <script type="text/javascript" src="/js/player.js"></script>
   </body>
 </html>

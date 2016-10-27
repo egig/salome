@@ -4,6 +4,7 @@ var app = EE();
 
 app.use('/bower_components', express.static(__dirname+'/bower_components'));
 
-app.load(__dirname);
+var config = require('./config');
+app.load(__dirname, config);
 
 module.exports = app;

@@ -19,7 +19,9 @@
   "dependencies": {
     "navigo": "^2.1.2",
     "nunjucks": "~2.4.2",
-    "material-design-lite": "^1.2.1"
+    "material-design-lite": "^1.2.1",
+    "react": "^15.3.2",
+    "babel-standalone": "^6.18.1"
   },
   "devDependencies": {
     "bootstrap-sass": "~3.3.7"

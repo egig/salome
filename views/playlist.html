@@ -24,16 +24,13 @@
       <main class="mdl-layout__content">
         <div class="page-content">
           <div class="content-container">
-          <form action="#">
-            <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="search-q">
-              <label class="mdl-textfield__label" for="search-q">Search youtube video...</label>
-            </div>
-          </form>
+          <div id="react-form-container">
+
+          </div>
           <div class="">
             <a class="playlist-delete" href="javascript:;" data-track-id="{{ t.id }}">Delete this playlist</a>
           </div>
-          <div id="search-result"> </div>
+          <div id="search-result"><ul class="mdl-list" id="video-list" style="border:none;">  </ul></div>
           <div id="tracks-container"></div>
         </div>
         </div>
@@ -51,5 +48,9 @@
     <script type="text/javascript">
     App.init(nunjucks, ROUTE_CONFIG, socket);
     </script>
+    <script type="text/javascript" src="/bower_components/react/react.js"> </script>
+    <script type="text/javascript" src="/bower_components/react/react-dom.js"> </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.18.1/babel.min.js"> </script>
+    <script type="text/babel" src="/js/components.js"></script>
   </body>
 </html>

@@ -12,7 +12,6 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
       this.loadPlaylists();
       this.listenSocketEvents();
       this.listenClickPlay();
-      this.handleSearchForm();
       this.lisenAddTrackFromSearch();
       this.handleNewPlaylist();
       this.listenDeleteTrack();
@@ -98,36 +97,6 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
             _this.loadPlaylists();
             router.navigate('/list/1'); //to default
           });
-    },
-
-    handleSearchForm: function() {
-      $(document).on('keyup', '#search-q', function(e) {
-        if($('#search-q').val().length < 3 ) {
-          return;
-        }
-
-        $('#search-result').html('<ul class="mdl-list" id="video-list" style="border:none;">  </ul>');
-        $('#search-result').show();
-
-        var apiKey = 'AIzaSyCib4u1AhhD-AYScV1hmdskxjDEZJC7Jc8';
-        var q = $('#search-q').val();
-        var url = 'https://www.googleapis.com/youtube/v3/search?type=video&part=snippet&key='+apiKey+'&q='+encodeURI(q);
-
-        $.getJSON(url, function(data) {
-
-            for(var i=0; i< data.items.length;i++ ) {
-              nunjucks.render('video-item.html', { item: data.items[i] }, function(err, res){
-                  if(err) {
-                    console.log(err);
-                  }
-
-                  $('#video-list').append(res);
-              });
-            }
-
-        });
-
-      });
     },
 
     lisenAddTrackFromSearch: function() {

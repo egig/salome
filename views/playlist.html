@@ -53,9 +53,9 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.18.1/babel.min.js"> </script>
     <script type="text/babel" src="/js/components.js"></script>
     <script type="text/javascript">
-      $(function(){
+      $(window).load(function() {
         Component.init("{{ youtubeApiKey }}")
-      });
+      })
     </script>
   </body>
 </html>

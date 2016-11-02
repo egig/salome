@@ -21,10 +21,11 @@ module.exports = {
       password : '',
       database : 'drafterbit'
     }
-  }
+  },
 
   salome: {
     username: "",
-    password: ""
+    password: "",
+    youtubeApiKey: ""
   }
 }

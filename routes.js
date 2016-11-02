@@ -11,7 +11,10 @@ router.get('/player', function(req, res) {
 });
 
 router.get('/playlist*', function(req, res) {
-  res.render('playlist.html')
+  var viewData = {
+    youtubeApiKey: req.app.get('config').salome.youtubeApiKey
+  }
+  res.render('playlist.html', viewData)
 });
 
 router.get('/api/playlists', function(req, res) {

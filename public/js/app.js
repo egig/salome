@@ -73,12 +73,7 @@ var App = (function(nunjucks, ROUTE_CONFIG, socket) {
         });
 
           socket.on('playlist.changed', function(plid) {
-            $.get('/api/playlist/'+plid+'/tracks', function(tracks) {
-                var c =  nunjucks.render('tracks.html', {tracks: tracks, playlist_id: plid});
-                $('#tracks-container').html(c);
-            });
-
-            App.currentPlaylistID =  plid;
+            //..
           });
 
           socket.on('track.played', function(video_id, index, plid){

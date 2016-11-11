@@ -39,7 +39,7 @@ var Component = {
                   data-video-title={ item.snippet.title }
                   data-video-thumbnail={ item.snippet.thumbnails.default.url }
                 >
-                  <i className="material-icons">play_for_work</i></a>
+                  <button className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add</button></a>
               </span>
             </li>
           );

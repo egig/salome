@@ -63,9 +63,9 @@ var Component = {
                     "data-video-thumbnail": item.snippet.thumbnails.default.url
                   },
                   React.createElement(
-                    "i",
-                    { className: "material-icons" },
-                    "play_for_work"
+                    "button",
+                    { className: "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" },
+                    "Add"
                   )
                 )
               )

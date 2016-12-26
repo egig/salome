@@ -1,5 +1,5 @@
 module.exports = {
-  basePath: "/desk",
+  basePath: "/",
   secret: "CHANGE THIS PLEASE",
   mainModuleName: "__main",
 
@@ -7,7 +7,7 @@ module.exports = {
   db : {
     client: 'sqlite3',
     connection: {
-      filename: "./database/drafterbit.sqlite"
+      filename: "./database/salome.sqlite"
     },
     useNullAsDefault: true
   }
@@ -19,7 +19,7 @@ module.exports = {
       host     : '127.0.0.1',
       user     : 'root',
       password : '',
-      database : 'drafterbit'
+      database : 'salome'
     }
   },
 
